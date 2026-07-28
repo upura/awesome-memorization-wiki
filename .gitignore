@@ -1,0 +1,8 @@
+# 一次資料の PDF は各出版社の権利に従うため Git 管理外とする
+docs/raw/papers/*.pdf
+docs/raw/articles/*.pdf
+
+_site/
+.jekyll-cache/
+.DS_Store
+__pycache__/

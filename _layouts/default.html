@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}</title>
+  <meta name="description" content="{{ site.description }}">
+  {% seo title=false %}
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+  <style>
+    .site-nav {
+      border-bottom: 1px solid #d8dee4;
+      padding: 12px 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 20px;
+      align-items: baseline;
+      font-size: 14px;
+    }
+    .site-nav .site-name { font-weight: bold; font-size: 16px; margin-right: 8px; }
+    .site-nav a { text-decoration: none; }
+    .page-meta {
+      font-size: 13px;
+      color: #59636e;
+      border-left: 3px solid #d8dee4;
+      padding: 4px 12px;
+      margin-bottom: 24px;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-nav">
+    <a class="site-name" href="{{ '/' | relative_url }}">Awesome Memorization Wiki</a>
+    <a href="{{ '/#目次' | relative_url }}">目次</a>
+    <a href="{{ '/#論文ページ' | relative_url }}">論文</a>
+    <a href="{{ '/#query' | relative_url }}">Query</a>
+    <a href="{{ '/docs/wiki/log.html' | relative_url }}">操作ログ</a>
+    <a href="https://github.com/upura/awesome-memorization-wiki">GitHub</a>
+  </header>
+  <div class="container-lg px-3 my-5 markdown-body">
+    {% if page.type == "concept" or page.type == "paper" %}
+      <div class="page-meta">
+        {% if page.axis %}軸: {{ page.axis | join: " / " }}{% endif %}
+        {% if page.survey_section %} ｜ サーベイ {{ page.survey_section }} 節{% endif %}
+        {% if page.venue %}{{ page.venue }}{% endif %}
+        {% if page.stub %} ｜ <strong>stub</strong>（原論文未読）{% endif %}
+      </div>
+    {% endif %}
+    {{ content }}
+  </div>
+</body>
+</html>

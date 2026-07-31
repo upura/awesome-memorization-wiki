@@ -42,7 +42,14 @@ type: concept
 
 ## 横断的知見
 
-**暗記は過学習の副産物ではない。** この Wiki で最も広く支持されている命題である。
+**暗記は汎化ではない。対照実験がある。** [Carlini 23b](../papers/carlini-2023-quantifying-memorization.md) は
+Pile で学習した GPT-Neo と、**同規模だが Pile を見ていない GPT-2** を同じ評価にかけた。
+GPT-2 が正解できたのは約 **6%**、同規模の GPT-Neo 1.3B は **40%**。
+GPT-2 が当てられた例は数列や定型句などの「つまらない」系列だった。
+「大きいモデルほど暗記する」を「大きいモデルは予測が上手いだけ」で説明することはできない。
+この Wiki が扱う実証的知見の中で、**最も直接的な因果の切り分け**である。
+
+**暗記は過学習の副産物でもない。**
 [Carlini 23b](../papers/carlini-2023-quantifying-memorization.md) が重複・[モデルサイズ](model-size.md)・
 [文脈長](context-length.md)という 3 つの因子との強い関連を実証し、
 [Tirumala 22](../papers/tirumala-2022-memorization-without-overfitting.md) は大規模言語モデルが

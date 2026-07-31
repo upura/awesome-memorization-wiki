@@ -31,15 +31,35 @@ Kiyomaru 24, Lee 22, Lee 23, Lu 24, McCoy 23, Takahashi 25b, Tirumala 22]。
 
 ## 横断的知見
 
-**3 因子のうち、最も再現性が高く、最も言語横断で頑健である。**
-サーベイ 4 章の 3 因子（重複・[モデルサイズ](model-size.md)・[文脈長](context-length.md)）を
-比べると、日本語での検証状況に差がある。
-[Ishihara 24](../papers/ishihara-2024-japanese-newspaper.md) と [Takahashi 25b](../papers/takahashi-2025-continual-pretraining-japanese.md) は
-**重複に関する知見を日本語で再現**している。一方 [文脈長](context-length.md) は
-[小柳 24] が**逆の関係**を報告している。
-つまり重複は言語に依存しにくい普遍的要因、文脈長は文脈依存的要因である可能性が高い。
-これはサーベイ 7·2 節が求める「暗記の普遍的要因と文脈依存的要因を切り分ける研究」に
-対する、現時点での暫定的な回答になっている。
+**言語には頑健だが、データセットには頑健でない。** この非対称が本ページの核心である。
+サーベイの記述だけを読むと重複は最も確立した因子に見えるが、
+原典の追試節（[Carlini 23b](../papers/carlini-2023-quantifying-memorization.md) 5 章）は
+**重複の知見がモデル族・データセットを跨ぐと崩れる**と明示している。
+
+> We expected our results to cleanly generalize across settings, and this is indeed true for
+> **model scale**. Yet, the situation is more complicated when considering **data duplication**,
+> due to training set idiosyncrasies.
+
+| 設定 | 重複の効果 |
+|---|---|
+| GPT-Neo / Pile（主実験） | 対数線形。2〜900 回で単調に増加 |
+| **T5 / C4**（マスク型） | **単調でない。** 138〜158 回重複が 159〜196 回重複より暗記されやすい（3σ で有意）。原因は前者が空白トークン主体で予測しやすいこと |
+| **OPT / 整理済み Pile** | 傾向は同じだが**効果の大きさが数桁小さい**。66B OPT が 125M GPT-Neo より暗記が少ない |
+
+T5 の非単調性は、**重複回数が「暗記のされやすさ」の代理変数として不完全**であることを示す。
+実際に効いているのは重複そのものではなく**予測の容易さ**であり、
+重複はその相関物にすぎない可能性がある。この読みは
+[Leybzon 24] の忘却モデル（後述）とも整合する。
+
+**一方、言語を跨いでは再現している。**
+[Kiyomaru 24](../papers/kiyomaru-2024-comprehensive-analysis.md)・[Ishihara 24](../papers/ishihara-2024-japanese-newspaper.md)・[Takahashi 25b](../papers/takahashi-2025-continual-pretraining-japanese.md) が
+日本語で重複の知見を再現しており、[文脈長](context-length.md)のような逆転は報告されていない。
+
+したがって、この Wiki が[ドメインや言語横断](multilingual-and-domain.md)で
+整理していた「普遍的要因 vs 文脈依存的要因」という軸は、
+**言語軸とデータセット軸で答えが違う**。3 因子のうち
+**両方の軸で頑健なのは[モデルサイズ](model-size.md)だけ**である。
+→ [対立の台帳](../conflicts.md) 8 番
 
 **メンバーシップ推論の設定でも再現される。** サーベイは重複の知見が
 「メンバーシップ推論の設定も含め」後続研究で再現されていると述べる。
@@ -61,9 +81,11 @@ Kiyomaru 24, Lee 22, Lee 23, Lu 24, McCoy 23, Takahashi 25b, Tirumala 22]。
 
 ## 未解決の問い
 
+- 重複が効いているのか、**予測の容易さ**が効いているのか。T5 の非単調性は後者を示唆する
 - 重複の「単位」はトークンか、文書か、意味的に等価な言い換えを含むか。
   [Tirumala 22] はトークン、[Kandpal 22] は文書で議論しており統一されていない
 - 日本語のように語境界が無い言語では、トークナイザ [Kudo 18] の分割方針が
   重複のカウントに影響する可能性がある [Ippolito 23] → [ドメインや言語横断](multilingual-and-domain.md)
-- 重複回数と暗記量の関数形（対数線形か、閾値的か）はドメインによらず一定か
+- ~~重複回数と暗記量の関数形はドメインによらず一定か~~ → **[Carlini 23b](../papers/carlini-2023-quantifying-memorization.md) が否定的に回答。**
+  T5 / C4 では単調ですらない。ではどのデータセット特性が関数形を決めるのか
 - [Leybzon 24] の暗記・忘却モデルは、バッチサイズや学習率スケジュールを変えても成立するか

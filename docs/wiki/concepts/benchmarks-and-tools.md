@@ -31,7 +31,7 @@ type: concept
 |---|---|
 | MIMIR | [Duan 24](../papers/duan-2024-do-mia-work.md) |
 | ML Privacy Meter | [Murakonda 20] |
-| Fast-MIA | [Takahashi 25a] — 効率的でスケーラブルな実装 |
+| [Fast-MIA](../papers/takahashi-2025-fast-mia.md) | vLLM で約 5 倍、手法横断キャッシュで中間結果を共有 |
 | （汚染検出手法の整理） | [Ravaut 25] |
 
 ## コンペティション
@@ -47,6 +47,7 @@ type: concept
 - [Chen 25](../papers/chen-2025-revisiting-mia.md) — 統計的・多角的な再検討。非本質的な性能を指摘
 - [Duan 24](../papers/duan-2024-do-mia-work.md) — MIMIR（よりランダムな分割）とライブラリ
 - [Carlini 22](../papers/carlini-2022-first-principles.md) — 評価**指標**の水準での批判
+- [Takahashi 25a](../papers/takahashi-2025-fast-mia.md) — 大規模な再評価を現実的にするライブラリ
 
 ## 横断的知見
 
@@ -91,8 +92,8 @@ MIMIR [Duan 24](../papers/duan-2024-do-mia-work.md) と OLMoMIA [Kim 26] の
 **日本語の標準的な評価セットは、この Wiki には無い。**
 [ドメインや言語横断](multilingual-and-domain.md) で整理したとおり日本語の実証研究は複数あるが、
 WikiMIA / MIMIR に相当する共有ベンチマークは見当たらない。
-[文脈長](context-length.md) の日本語での逆転が言語特性か評価セット構成かを切り分けるには、
-まさにこの欠落が障害になっている。**明確な知識ギャップ。**
+[文脈長](context-length.md) の日本語での挙動を切り分けるにも、この欠落が障害になっている。
+**明確な知識ギャップ。**
 
 **評価指標の水準にも同種の批判がある。** [Carlini 22](../papers/carlini-2022-first-principles.md) は
 AUC のような直接的な指標では不十分であり、低い偽陽性率における真陽性率を

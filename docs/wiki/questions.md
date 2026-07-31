@@ -34,12 +34,12 @@ Wiki 全体への波及が大きい順。
 
 | # | 問い | 種別 | 主なページ |
 |---|---|---|---|
-| 1 | 日本語での[文脈長の逆転](concepts/context-length.md)は、言語特性・定量化手法・評価セット構成のどれに由来するか | B | [文脈長](concepts/context-length.md) [ドメインや言語横断](concepts/multilingual-and-domain.md) |
+| 1 | ~~日本語での文脈長の逆転は何に由来するか~~ → **「日本語で逆転する」は支持されないと判明**（2026-07-31）。新しい問いは<br>**信号が弱い設定（AUC ≒ 0.5）での減少はノイズか実効果か** | B | [文脈長](concepts/context-length.md) [対立の台帳](conflicts.md) |
 | 2 | **「メンバーシップ推論が効かなくなった」を抑制手法の成功指標にしてよいか。**抑制手法を測定手法と独立に検証する方法論はどう設計するか | C | [評価の枠組み](concepts/evaluation-framework.md) [逆学習](concepts/machine-unlearning.md) |
 | 3 | 日本語・ドメイン特化コーパスで抑制手法（重複排除・PEFT・逆学習）の有効性は再現するか | B | [ドメインや言語横断](concepts/multilingual-and-domain.md) [学習過程における抑制](concepts/mitigation-in-training.md) |
 | 4 | 「許容可能な暗記」と「深刻度の高い暗記」を**操作的に**区別する指標は作れるか<br>→ [Carlini 21](papers/carlini-2021-extracting-training-data.md) の k-eidetic が部分的に回答。**なぜ普及しなかったか**が次の問い | C | [暗記](concepts/memorization.md) [評価の枠組み](concepts/evaluation-framework.md) |
-| 5 | WikiMIA の分布差問題を踏まえて、過去に報告された手法の優劣は再評価する必要があるか。MIMIR / OLMoMIA での再ランキングは体系的に行われていない | A | [評価セットとライブラリ](concepts/benchmarks-and-tools.md) [メンバーシップ推論](concepts/membership-inference.md) |
-| 6 | 「暗記だけ減らして性能を保つ」ことは原理的に可能か。それとも性能とのトレードオフか | B | [暗記と汎化](concepts/memorization-vs-generalization.md) [モデルサイズ](concepts/model-size.md) |
+| 5 | **外れ値的なデータ点に限れば、高いトークン/パラメータ比でもメンバーシップ推論は成立するか**<br>[Morris 26](papers/morris-2026-how-much-memorize.md) の「成立しない」は平均的データ点・損失ベース・完全重複排除に限定される。守るべきデータはこの範囲の外にある | B | [メンバーシップ推論](concepts/membership-inference.md) [対立の台帳](conflicts.md) |
+| 6 | 「暗記だけ減らして性能を保つ」ことは原理的に可能か<br>→ [Morris 26](papers/morris-2026-how-much-memorize.md) は容量制約下の**相転移**という描像を与えた。**同じ容量で意図せぬ暗記だけ減らせるか**が次の問い | B | [暗記と汎化](concepts/memorization-vs-generalization.md) [モデルサイズ](concepts/model-size.md) |
 | 7 | 対数線形関係は 6B を大きく超える規模（数百 B〜）でも維持されるか<br>→ [Carlini 23b](papers/carlini-2023-quantifying-memorization.md) の OPT 追試（〜66B）が部分的に回答。傾向は再現するが**効果が数桁小さく**、規模とデータ整理が交絡 | A | [モデルサイズ](concepts/model-size.md) |
 | 8 | 異なる定義で測った暗記量を相互に変換・比較する枠組みはあるか | C | [暗記](concepts/memorization.md) [反実仮想](concepts/counterfactual-memorization.md) |
 | 9 | 依拠性を立証しうる技術的手段は、メンバーシップ推論以外にあるか | B | [著作権](concepts/copyright.md) |
@@ -53,7 +53,9 @@ Wiki 全体への波及が大きい順。
 
 ### 評価セット・指標
 
-- MIMIR / OLMoMIA 上で、WikiMIA 時代の手法ランキングを再構築した体系的な研究はあるか — [評価セットとライブラリ](concepts/benchmarks-and-tools.md)
+- MIMIR / OLMoMIA 上で、WikiMIA 時代の手法ランキングを再構築した体系的な研究はあるか。
+  [Morris 26](papers/morris-2026-how-much-memorize.md) の予測と整合するか — [評価セットとライブラリ](concepts/benchmarks-and-tools.md)
+- [Morris 26](papers/morris-2026-how-much-memorize.md) のスケーリング則は損失ベース以外の手法にも成立するか — [メンバーシップ推論](concepts/membership-inference.md)
 - 低偽陽性率領域の指標を採用すると、手法のランキングはどう変わるか — [メンバーシップ推論](concepts/membership-inference.md)
 - 目的別の推奨手法を、実際のベンチマークとして具体化した例はあるか — [評価の枠組み](concepts/evaluation-framework.md)
 - 評価セット構築時の重複・文脈長バイアスを診断する標準的なチェックリストはあるか — [評価の枠組み](concepts/evaluation-framework.md)
@@ -92,11 +94,13 @@ Wiki 全体への波及が大きい順。
 
 ### 日本語・言語横断（この Wiki 最大のギャップ）
 
-- 日本語での逆転は言語特性・定量化手法・評価セット構成のどれに由来するか — [文脈長](concepts/context-length.md)
+- **AUC ≒ 0.5 の領域での文脈長に対する減少はノイズか実効果か** — [文脈長](concepts/context-length.md)
+- [小柳 24] の逆転も信号の弱い領域で起きているか（**原論文未読**） — [文脈長](concepts/context-length.md)
 - 日本語で文字列類似度ベースの文脈長分析を行うと正の関係が出るか — [文脈長](concepts/context-length.md)
 - 語境界の無い他の言語（中国語、タイ語）でも同じ逆転が起きるか — [文脈長](concepts/context-length.md)
 - トークナイザを変える（文字単位、バイト単位）と逆転は消えるか — [文脈長](concepts/context-length.md) [ドメインや言語横断](concepts/multilingual-and-domain.md)
 - 日本語・ドメイン特化コーパスで抑制手法の有効性は再現するか — [ドメインや言語横断](concepts/multilingual-and-domain.md)
+- 日本語では **LOSS が Min-K% Prob を上回る**（[Takahashi 25b](papers/takahashi-2025-continual-pretraining-japanese.md)）。手法の優劣が言語で変わる機序は何か — [メンバーシップ推論](concepts/membership-inference.md)
 - 日本語のように語境界が無い言語で、トークン一致率や BLEU は妥当な指標か — [文字列の類似度](concepts/string-similarity-memorization.md)
 - トークナイザの分割方針が重複のカウントに影響するか — [文字列の重複](concepts/string-duplication.md)
 - 日本語など英語以外での知識プローブは何を基準に構築すべきか — [知識を問うタスク](concepts/knowledge-probing.md)
@@ -170,6 +174,7 @@ Wiki 全体への波及が大きい順。
 
 | 問い | 結果 |
 |---|---|
+| **日本語で文脈長の効果は逆転するか** | **否定**。日本語 3 本中 2 本は正の関係を再現。逆転は AUC ≒ 0.5 の領域に限られる → [対立の台帳](conflicts.md) 1 番 |
 | デコーディング戦略の影響に関する対立 | **解消**（比較対象が違った）→ [対立の台帳](conflicts.md) 2 番 |
 | 重複回数と暗記量の関数形はドメインによらず一定か | **否定的に回答**（T5/C4 で非単調）→ [対立の台帳](conflicts.md) 8 番 |
 | 許容可能な暗記の操作的な区別 | **部分的に回答**（k-eidetic） |

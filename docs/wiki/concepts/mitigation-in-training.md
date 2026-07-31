@@ -115,4 +115,7 @@ type: concept
   「アクセスできない」ことと「暗記していない」ことは別である
 - 連合学習が主流でない現状で、これらの知見は大規模言語モデルにどこまで外挿できるか
 - 日本語・ドメイン特化コーパスで抑制手法の有効性は再現するか
-  → [ドメインや言語横断](multilingual-and-domain.md)
+  → [ドメインや言語横断](multilingual-and-domain.md)。
+  なお [Takahashi 25b](../papers/takahashi-2025-continual-pretraining-japanese.md) は
+  LoRA で継続事前学習しており、**測定された暗記量は全パラメータ学習より低い可能性がある**。
+  日本語の実証的知見にも PEFT の交絡が入っている

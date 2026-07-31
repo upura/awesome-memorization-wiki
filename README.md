@@ -20,6 +20,7 @@
 
 直近の更新の抜粋です（全履歴は[操作ログ](./docs/wiki/log.md)）。
 
+- 2026-07-31: [Morris+ (ICML 2026)](./docs/wiki/papers/morris-2026-how-much-memorize.md) を ingest（サーベイのカットオフ以降の研究）。[対立の台帳](./docs/wiki/conflicts.md) 4 番が「両立する」に決着
 - 2026-07-31: 被参照数トップの 5 本（[Carlini 23b](./docs/wiki/papers/carlini-2023-quantifying-memorization.md)・[Ippolito 23](./docs/wiki/papers/ippolito-2023-false-sense-of-privacy.md)・[Das 25](./docs/wiki/papers/das-2025-blind-baselines.md)・[Brown 22](./docs/wiki/papers/brown-2022-what-does-it-mean-privacy.md)・[Carlini 21](./docs/wiki/papers/carlini-2021-extracting-training-data.md)）を原典から読み直し、stub を解消。[対立の台帳](./docs/wiki/conflicts.md)が 1 件解消・1 件追加
 - 2026-07-30: [未解決の問い（研究アジェンダ）](./docs/wiki/questions.md)と[対立の台帳](./docs/wiki/conflicts.md)を新設
 - 2026-07-29: サーベイ論文を軸に Wiki を初期構築。概念ページ 23 件・論文ページ 25 件・Query 2 件
@@ -68,7 +69,7 @@
 
 - [文字列の重複](./docs/wiki/concepts/string-duplication.md): 重複が多いほど暗記されやすい。最も頑健な因子
 - [モデルサイズ](./docs/wiki/concepts/model-size.md): ほぼ完全な対数線形関係。性能の副産物かもしれない
-- [文脈長](./docs/wiki/concepts/context-length.md): **日本語で結論が逆転している唯一の因子**
+- [文脈長](./docs/wiki/concepts/context-length.md): 発見可能性の現象。日本語での「逆転」は**設定依存だと判明**（2026-07-31 訂正）
 - [学習順と忘却](./docs/wiki/concepts/training-order-and-forgetting.md): 重複の効果を説明する機構
 
 ### 暗記の抑制（5章）
@@ -109,6 +110,7 @@
 - [Membership inference attacks against machine learning models](./docs/wiki/papers/shokri-2017-membership-inference.md) (Shokri+, 2017): メンバーシップ推論の原典
 - [Detecting pretraining data from large language models](./docs/wiki/papers/shi-2024-min-k-prob.md) (Shi+, 2024): Min-K% Prob と WikiMIA。標準であり批判の的
 - [Speak, memory: An archaeology of books known to ChatGPT/GPT-4](./docs/wiki/papers/chang-2023-speak-memory.md) (Chang+, 2023): 事後学習済みモデルを扱う数少ない例
+- [How much do language models memorize?](./docs/wiki/papers/morris-2026-how-much-memorize.md) (Morris+, 2026): 容量 3.6 bits/param。暗記と汎化を情報理論的に分離
 
 ### 方法論への批判
 
@@ -130,7 +132,8 @@
 ### 日本語・多言語
 
 - [A comprehensive analysis of memorization in LLMs](./docs/wiki/papers/kiyomaru-2024-comprehensive-analysis.md) (Kiyomaru+, 2024): 日本語で英語の知見が再現される
-- [Quantifying memorization ... using Japanese newspaper](./docs/wiki/papers/ishihara-2024-japanese-newspaper.md) (Ishihara+, 2024): 日本語新聞記事での定量化
+- [Quantifying memorization ... using Japanese newspaper](./docs/wiki/papers/ishihara-2024-japanese-newspaper.md) (Ishihara+, 2024): 日本語新聞記事での定量化。**3 因子すべてを日本語で再現**
+- [Fast-MIA: Efficient and scalable membership inference for LLMs](./docs/wiki/papers/takahashi-2025-fast-mia.md) (Ishihara+, 2025): 評価を効率化するライブラリ
 - [Quantifying memorization in continual pre-training with Japanese corpora](./docs/wiki/papers/takahashi-2025-continual-pretraining-japanese.md) (Takahashi+, 2025): 継続事前学習。文脈長で反例
 - [Memorization is language-sensitive](./docs/wiki/papers/satvaty-2025-language-sensitive.md) (Satvaty+, 2025): 低資源言語ほど推論されやすい
 
@@ -160,7 +163,7 @@
 1. **日本語での抑制手法の有効性** — 定量化の日本語検証は複数あるが、
    [重複排除](./docs/wiki/concepts/deduplication.md)・[学習過程での抑制](./docs/wiki/concepts/mitigation-in-training.md)・[出力の制御](./docs/wiki/concepts/output-control-and-watermarking.md)の
    有効性を日本語で確認した研究が本 Wiki には無い
-2. **[文脈長](./docs/wiki/concepts/context-length.md)の日本語での逆転の原因** — 言語特性 / 定量化手法 / 評価セット構成の切り分けが未了
+2. **信号が弱い設定（AUC ≒ 0.5）での[文脈長](./docs/wiki/concepts/context-length.md)の減少はノイズか実効果か** — 原論文の数値に当たって初めて立った問い
 3. **日本語の標準ベンチマーク** — WikiMIA・MIMIR に相当するものが無い
 4. **抑制手法を測定手法と独立に検証する方法論** — [評価の枠組み](./docs/wiki/concepts/evaluation-framework.md)を参照
 5. **原論文未読の stub が 24 本** — 特に [Zhang 23](./docs/wiki/papers/zhang-2023-counterfactual-memorization.md) と

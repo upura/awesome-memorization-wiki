@@ -24,6 +24,7 @@ type: concept
 
 - [Carlini 23b](../papers/carlini-2023-quantifying-memorization.md) — 対数線形関係を示した原典。逐語暗記の定義に基づく
 - [Ippolito 23](../papers/ippolito-2023-false-sense-of-privacy.md) — **近似暗記でも同様の結果**を確認
+- [Morris 26](../papers/morris-2026-how-much-memorize.md) — **1 パラメータあたり約 3.6 ビット**という容量を測定。対数線形関係に機序を与える
 - [Huang 24] — モデルの一般的な性能と暗記が密接に関係していると考察
 - [Lu 24] — 事実の暗記に関するスケーリング則
 - [Kiyomaru 24](../papers/kiyomaru-2024-comprehensive-analysis.md) — 日本語でも再現
@@ -55,6 +56,20 @@ OPT は 66B でも 125M GPT-Neo より Pile の暗記が少ない。
 GPT-2 が当てられた例は数列や定型句などの「つまらない」系列だった。
 この対照実験があるため、対数線形関係を「大きいモデルは予測が上手いだけ」で
 説明することはできない。→ [暗記](memorization.md)
+
+**「なぜ大きいほど暗記するのか」に容量という答えが出た（2026-07-31 追記）。**
+[Morris 26](../papers/morris-2026-how-much-memorize.md) は、汎化の余地を消した
+一様ランダムなビット列で学習することで、GPT 系 Transformer が
+**1 パラメータあたり 3.5〜4 ビット**（半精度で α = 3.64）を格納できると測定した。
+
+容量がパラメータ数に比例するなら、暗記量がモデルサイズとともに増えるのは当然である。
+さらにこの描像は**上限**も与える——モデルは容量が埋まるまで暗記し、
+埋まると意図せぬ暗記は**減少に転じる**（grokking）。
+[Carlini 23b](../papers/carlini-2023-quantifying-memorization.md) の対数線形関係は、
+**容量が飽和していない領域での観測**だったと読み直せる。
+
+ただし [Morris 26](../papers/morris-2026-how-much-memorize.md) が自前で学習したのは
+1.5B までであり、フロンティア規模への適用はスケーリング則による外挿である。
 
 **それでも「性能が上がる」の副産物かもしれない。**
 [Huang 24] の考察が最も説明力が高い。モデルサイズが暗記と関連するのは、

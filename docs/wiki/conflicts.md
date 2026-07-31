@@ -23,31 +23,44 @@ type: ledger
 
 ---
 
-## 1. 文脈長の効果が英語と日本語で逆転する
+## 1. 文脈長の効果はどの条件で反転するか
 
-**状態: 未決着** ｜ 主ページ: [文脈長](concepts/context-length.md)
+**状態: 大幅に縮小（2026-07-31 更新）** ｜ 主ページ: [文脈長](concepts/context-length.md)
 
-この Wiki で唯一、実証的知見の符号そのものが反転している対立。
+> **当初「日本語で逆転する」と整理していたが、原論文を読んで支持されないと判明した。**
+> 日本語の研究 3 本のうち 2 本は正の関係を再現している。
 
-| 立場 | 根拠 |
-|---|---|
-| **正の関係**（文脈長が長いほど暗記が増える） | [Carlini 23b](papers/carlini-2023-quantifying-memorization.md)、[Chen 25](papers/chen-2025-revisiting-mia.md)、[Shi 24](papers/shi-2024-min-k-prob.md)、[Kandpal 22](papers/kandpal-2022-deduplicating-privacy.md) |
-| **負の関係**（文脈長が短いほど性能が高い） | [小柳 24]（日本語 MIA）、[Takahashi 25b](papers/takahashi-2025-continual-pretraining-japanese.md)（一部の実験） |
+| 研究 | 言語・設定 | 向き |
+|---|---|---|
+| [Carlini 23b](papers/carlini-2023-quantifying-memorization.md)、[Chen 25](papers/chen-2025-revisiting-mia.md)、[Shi 24](papers/shi-2024-min-k-prob.md)、[Kandpal 22](papers/kandpal-2022-deduplicating-privacy.md) | 英語 | 正 |
+| [Kiyomaru 24](papers/kiyomaru-2024-comprehensive-analysis.md) | 日本語・続きの生成 | **正** |
+| [Ishihara 24](papers/ishihara-2024-japanese-newspaper.md) | 日本語・新聞記事で自前事前学習 | **正**（3 因子すべて再現） |
+| [Takahashi 25b](papers/takahashi-2025-continual-pretraining-japanese.md) | 日本語・日経電子版（産業特化） | **正**（128 語まで） |
+| [Takahashi 25b](papers/takahashi-2025-continual-pretraining-japanese.md) | 日本語・Wikipedia（一般） | **負**（ただし AUC ≒ 0.5） |
+| [小柳 24] | 日本語 MIA | **負**（原論文未読） |
 
-### 切り分けられていない交絡
+### 判明したこと
 
-1. **言語**: 日本語には語境界が無い。ユニグラム言語モデル [Kudo 18] のトークン分割が影響する可能性
-2. **定量化手法**: 反例はいずれもメンバーシップ推論の設定。英語の正の関係は文字列類似度でも確認されている
-3. **ドメイン**: [Takahashi 25b](papers/takahashi-2025-continual-pretraining-japanese.md) は継続事前学習という特殊な設定
-4. **評価セットの構成**: 分布差の検出しやすさを反映している可能性（推測）
+1. **言語ではなくコーパスで分かれる。** [Takahashi 25b](papers/takahashi-2025-continual-pretraining-japanese.md) は
+   Llama 3 + LoRA という同一条件で、日経電子版では増加、Wikipedia では減少を示した
+2. **減少はメンバーシップ推論がほとんど機能していない領域で起きている。**
+   Wikipedia の AUC はほぼすべて 0.46〜0.53（偶然と大差ない）。
+   一方、日経電子版は 0.69 まで達し、そこでは増加する
+3. したがって「逆転」の多くは**信号が無い領域での変動**である可能性が高い
 
-### 決着させる実験
+### 残る問い
 
-- **日本語で文字列類似度ベースの文脈長分析を行う。** 正の関係が出れば手法要因、
-  出なければ言語要因の可能性が高まる。**最も安価で情報量が大きい**
-- [Takahashi 25b](papers/takahashi-2025-continual-pretraining-japanese.md) で
-  **逆転が起きた実験と起きなかった実験の差**を特定する
-- 中国語・タイ語など、語境界の無い他言語で再現するか確認する
+- **AUC ≒ 0.5 の領域での減少はノイズか実効果か。** 信頼区間なしでは判断できない
+- [小柳 24] の逆転も信号の弱い領域か。**原論文の確認が必要**（この Wiki 未読）
+- なぜ一般コーパス（Wikipedia）では信号が出ないのか。
+  [Morris 26](papers/morris-2026-how-much-memorize.md) の
+  「トークン/パラメータ比が大きいと平均的データ点への MI は成立しない」で説明できるか
+
+### 教訓
+
+**サーベイの「注目に値する」という記述は正しかった。**
+誤っていたのは、それを本 Wiki が**言語による逆転**と読み替えたことである。
+原論文の数値に当たるまで、この誤読は検出できなかった。
 
 ---
 
@@ -118,27 +131,38 @@ train-test 分割を設計できない）。**この非対称は残る。**
 
 ## 4. 「メンバーシップ推論が効かない」は方法論の失敗か理論的帰結か
 
-**状態: 保留（決着材料が存在する可能性）** ｜ 主ページ: [メンバーシップ推論](concepts/membership-inference.md)
+**状態: 両立する（2026-07-31 更新）** ｜ 主ページ: [メンバーシップ推論](concepts/membership-inference.md)
 
 | 立場 | 根拠 |
 |---|---|
 | **方法論の失敗** | [Das 25](papers/das-2025-blind-baselines.md)、[Chen 25](papers/chen-2025-revisiting-mia.md)、[Duan 24](papers/duan-2024-do-mia-work.md): 評価セットの分布差が非本質的な性能を生んでいた |
-| **理論的帰結** | Morris et al.「How much do language models memorize?」（ICML 2026）: トークン/パラメータ比が大きいモデルは原理的にメンバーシップ推論から遮蔽される（**この Wiki 未 ingest・未検証**） |
+| **理論的帰結** | [Morris 26](papers/morris-2026-how-much-memorize.md): 損失ベースのメンバーシップ推論の F1 は容量/データサイズ比のシグモイド則に従い、トークン/パラメータ比 10² 以上では 0.5 に収束する |
 
-なお [Das 25](papers/das-2025-blind-baselines.md) 自身は、盲目的攻撃が上回ることをもって
-**漏洩がゼロだと主張してはいない**。「データ特徴に基づいて（まずい形で）推論している可能性を
-排除できない」という言い方である。したがって「方法論の失敗」説も
-「漏洩は無い」という強い主張ではなく、**現行の評価からは何も言えない**という主張である。
+> **2026-07-31 更新**: [Morris 26](papers/morris-2026-how-much-memorize.md) を ingest した。
+> 2 つの立場は**排他ではなく、対象が違う**ことが分かった。
 
-この 2 つは排他ではない。しかし後者が正しければ、
-**否定的な結果の一部は評価セットを直しても解消しない**ことになり、
-[評価セットとライブラリ](concepts/benchmarks-and-tools.md) と
-[メンバーシップ推論](concepts/membership-inference.md) の横断的知見は書き換えが要る。
+### 整理：対象が違う
 
-### 決着させる手順
+- **方法論の失敗**は「現行の評価から何も言えない」という主張である。
+  [Das 25](papers/das-2025-blind-baselines.md) 自身、盲目的攻撃が上回ることをもって
+  **漏洩がゼロだとは主張していない**（「データ特徴に基づいて推論している可能性を排除できない」）
+- **理論的帰結**は「**重複排除された平均的なデータ点**に対する**損失ベース**の攻撃は
+  統計的に有意にならない」という、範囲の限定された主張である
 
-- **Morris et al. を ingest して主張を確認する**（→ [未解決の問い](questions.md) 最優先 5）
-- MIMIR / OLMoMIA 上での再ランキングが、理論の予測と整合するか照合する
+したがって両立する。そして**どちらも「漏洩は無い」を意味しない**。
+
+### 残る、そして最も重要な問い
+
+[Morris 26](papers/morris-2026-how-much-memorize.md) の限定を外した領域——
+**外れ値的なデータ点・高度に重複したデータ・損失ベース以外の手法**——は、
+理論の射程外であり、評価セットの問題も未解決のまま残る。
+そして[著作権](concepts/copyright.md)や
+[セキュリティ](concepts/security-and-privacy-leakage.md)で実際に問題になるのは、
+まさにこの領域である（→ 本台帳 5 番「外れ値ほど識別されやすい」）。
+
+- 外れ値に限れば、高いトークン/パラメータ比でもメンバーシップ推論は成立するか
+- スケーリング則は ReCaLL・Con-ReCall・SaMIA など損失ベース以外にも成立するか
+- MIMIR / OLMoMIA 上での再ランキングが、理論の予測と整合するか
 
 ---
 
@@ -167,6 +191,12 @@ train-test 分割を設計できない）。**この非対称は残る。**
 **この Wiki はまだ整合的な説明を持たない**。
 [Carlini 21](papers/carlini-2021-extracting-training-data.md) の
 k-eidetic（k が小さいほど有害）は後者の側に立つ定義である。
+
+**この対立は 4 番の射程と直結する。**
+[Morris 26](papers/morris-2026-how-much-memorize.md) が
+「メンバーシップ推論は成立しない」と述べるのは**平均的なデータ点**についてであり、
+外れ値は射程外である。守るべきデータが外れ値の側にあるなら、
+理論的な遮蔽は**実務的に最も重要な領域を守っていない**ことになる。
 
 **含意が重要**: 守るべき機密情報はまさに外れ値の側にあるため、
 [重複排除](concepts/deduplication.md)は**最も守るべきデータには効かない**。

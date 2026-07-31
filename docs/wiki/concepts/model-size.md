@@ -65,7 +65,10 @@ GPT-2 が当てられた例は数列や定型句などの「つまらない」�
 暗記を減らすためにモデルを小さくすることは、有用性を直接削ることを意味する。
 
 **定義を緩めても関係は崩れない。** [Carlini 23b](../papers/carlini-2023-quantifying-memorization.md) は
-逐語暗記、[Ippolito 23](../papers/ippolito-2023-false-sense-of-privacy.md) は近似暗記で同じ結果を得た。
+逐語暗記、[Ippolito 23](../papers/ippolito-2023-false-sense-of-privacy.md) は
+BLEU ベースの近似暗記で同じ傾向を得た。
+後者は逐語暗記を完全阻止する防御（MemFree）を有効にした状態でも
+「大きいモデルほど正解後続に近い」ことを確認している。
 3 因子の中で、**定義への頑健性が最も明確に確認されている**のはモデルサイズである。
 （[重複](string-duplication.md)は複数の定量化手法で再現され、
 [文脈長](context-length.md)は言語によって逆転する。）

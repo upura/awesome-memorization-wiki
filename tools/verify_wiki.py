@@ -179,9 +179,23 @@ for path, t in text.items():
                 f"[未エスケープパイプ] {rel(path)}:{i}: "
                 "リスト項目内の | は \\| にする")
 
+# ---- 参考情報: stub の被参照数 ---------------------------------------
+# 「stub が N 本」では動けないが、「この stub は M ページが依存」なら読む順序が決まる。
+stub_refs = sorted(
+    ((os.path.basename(p)[:-3], len([c for c in concepts if os.path.basename(p) in text[c]]))
+     for p in papers if "stub: true" in text[p]),
+    key=lambda x: -x[1])
+
 # ---- 出力 -------------------------------------------------------------
 print(f"検査対象: {len(md_files)} ファイル "
       f"(概念 {len(concepts)} / 論文 {len(papers)} / Query {len(queries)})")
+
+if stub_refs:
+    print(f"\n参考: stub {len(stub_refs)} 本（被参照数の多い順に読むと効率が良い）")
+    for name, n in stub_refs[:5]:
+        print(f"  {n:2d} 概念ページが依存  {name}")
+    if len(stub_refs) > 5:
+        print(f"  ... 他 {len(stub_refs) - 5} 本")
 if problems:
     print(f"\n{len(problems)} 件の問題:")
     for p in problems:

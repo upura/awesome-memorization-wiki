@@ -54,12 +54,18 @@ description: 論文 PDF を docs/raw/papers/ に取り込み、サマリーペ�
 概念ページから論文ページへリンクしたら、論文ページの `## Wiki 内の接点` からも
 その概念ページへリンクを返す。片方向リンクは `lint` で検出される。
 
-### 5. `README.md` の目次を更新
+### 5. `questions.md` と `conflicts.md` を更新
+
+- 答えた問いには `→ 論文へのリンク` を追記する。**問いは消さない**
+- 新たに立った問いを `docs/wiki/questions.md` の該当分類に足す
+- 既存の記述と矛盾したら `docs/wiki/conflicts.md` に項目を追加する
+
+### 6. `README.md` の目次を更新
 
 該当セクションに 1 行追加（`README.md` がサイトのトップページ 兼 カタログを兼ねる）。
 掲載漏れは `python3 tools/verify_wiki.py` が検出する。
 
-### 6. `log.md` に追記
+### 7. `log.md` に追記
 
 `docs/wiki/log.md` の末尾に 1 行、**追記のみ**。リンクは `log.md` からの相対パスで書く:
 
@@ -67,7 +73,7 @@ description: 論文 PDF を docs/raw/papers/ に取り込み、サマリーペ�
 | 2026-07-29 14:32 | ingest-paper | Added [Carlini 23b](papers/carlini-2023-quantifying-memorization.md), updated [文字列の重複](concepts/string-duplication.md) [モデルサイズ](concepts/model-size.md) |
 ```
 
-### 7. 検証
+### 8. 検証
 
 ```sh
 python3 tools/verify_wiki.py

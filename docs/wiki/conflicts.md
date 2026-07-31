@@ -151,10 +151,22 @@ train-test 分割を設計できない）。**この非対称は残る。**
 | **重複が多いほど暗記されやすい** | [Carlini 23b](papers/carlini-2023-quantifying-memorization.md)、[Lee 22](papers/lee-2022-deduplicating.md)、[Kandpal 22](papers/kandpal-2022-deduplicating-privacy.md) |
 | **希少・低資源ほど漏洩リスクが高い** | [Jagannatha 21]（希少疾患の患者）、[Satvaty 25](papers/satvaty-2025-language-sensitive.md)（低資源言語ほど MIA の性能が高い） |
 
+| **非典型的なデータほど暗記されやすい** | [Brown 22](papers/brown-2022-what-does-it-mean-privacy.md)（LM は atypical なデータ点をとりわけ暗記しやすく、それがまさにプライバシリスクを表す）、[Feldman 20](papers/feldman-2020-influence-long-tail.md)（ロングテール） |
+
 ### 整理
 
-矛盾ではなく**測っている量が違う**。暗記されやすさは重複に依存し、
+前 2 者は矛盾ではなく**測っている量が違う**。暗記されやすさは重複に依存し、
 識別されやすさは希少性（外れ値性）に依存する。
+
+**第 3 の立場が問題を複雑にする。** [Brown 22](papers/brown-2022-what-does-it-mean-privacy.md) と
+[Feldman 20](papers/feldman-2020-influence-long-tail.md) は、
+**暗記そのものが非典型的なデータ点で起きやすい**と述べる。これは
+「重複が多いほど暗記されやすい」と正面から向き合う。両立させるなら
+「頻度が高いものは暗記されやすく、かつ、頻度が低いものの中で暗記されたものは
+モデルにとって特異である」という二相の描像が要るが、
+**この Wiki はまだ整合的な説明を持たない**。
+[Carlini 21](papers/carlini-2021-extracting-training-data.md) の
+k-eidetic（k が小さいほど有害）は後者の側に立つ定義である。
 
 **含意が重要**: 守るべき機密情報はまさに外れ値の側にあるため、
 [重複排除](concepts/deduplication.md)は**最も守るべきデータには効かない**。

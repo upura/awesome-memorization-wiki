@@ -37,10 +37,10 @@ Wiki 全体への波及が大きい順。
 | 1 | 日本語での[文脈長の逆転](concepts/context-length.md)は、言語特性・定量化手法・評価セット構成のどれに由来するか | B | [文脈長](concepts/context-length.md) [ドメインや言語横断](concepts/multilingual-and-domain.md) |
 | 2 | **「メンバーシップ推論が効かなくなった」を抑制手法の成功指標にしてよいか。**抑制手法を測定手法と独立に検証する方法論はどう設計するか | C | [評価の枠組み](concepts/evaluation-framework.md) [逆学習](concepts/machine-unlearning.md) |
 | 3 | 日本語・ドメイン特化コーパスで抑制手法（重複排除・PEFT・逆学習）の有効性は再現するか | B | [ドメインや言語横断](concepts/multilingual-and-domain.md) [学習過程における抑制](concepts/mitigation-in-training.md) |
-| 4 | 「許容可能な暗記」と「深刻度の高い暗記」を**操作的に**区別する指標は作れるか | C | [暗記](concepts/memorization.md) [評価の枠組み](concepts/evaluation-framework.md) |
+| 4 | 「許容可能な暗記」と「深刻度の高い暗記」を**操作的に**区別する指標は作れるか<br>→ [Carlini 21](papers/carlini-2021-extracting-training-data.md) の k-eidetic が部分的に回答。**なぜ普及しなかったか**が次の問い | C | [暗記](concepts/memorization.md) [評価の枠組み](concepts/evaluation-framework.md) |
 | 5 | WikiMIA の分布差問題を踏まえて、過去に報告された手法の優劣は再評価する必要があるか。MIMIR / OLMoMIA での再ランキングは体系的に行われていない | A | [評価セットとライブラリ](concepts/benchmarks-and-tools.md) [メンバーシップ推論](concepts/membership-inference.md) |
 | 6 | 「暗記だけ減らして性能を保つ」ことは原理的に可能か。それとも性能とのトレードオフか | B | [暗記と汎化](concepts/memorization-vs-generalization.md) [モデルサイズ](concepts/model-size.md) |
-| 7 | 対数線形関係は 6B を大きく超える規模（数百 B〜）でも維持されるか | A | [モデルサイズ](concepts/model-size.md) |
+| 7 | 対数線形関係は 6B を大きく超える規模（数百 B〜）でも維持されるか<br>→ [Carlini 23b](papers/carlini-2023-quantifying-memorization.md) の OPT 追試（〜66B）が部分的に回答。傾向は再現するが**効果が数桁小さく**、規模とデータ整理が交絡 | A | [モデルサイズ](concepts/model-size.md) |
 | 8 | 異なる定義で測った暗記量を相互に変換・比較する枠組みはあるか | C | [暗記](concepts/memorization.md) [反実仮想](concepts/counterfactual-memorization.md) |
 | 9 | 依拠性を立証しうる技術的手段は、メンバーシップ推論以外にあるか | B | [著作権](concepts/copyright.md) |
 | 10 | 逆学習は生成を抑えるだけか、パラメータから情報を除去するか | B | [逆学習](concepts/machine-unlearning.md) [知識編集](concepts/knowledge-editing.md) |
@@ -70,6 +70,8 @@ Wiki 全体への波及が大きい順。
 ### 定義・手法の接続
 
 - 剽窃検出の伝統的指標を暗記の定量化に取り込んだ研究は存在するか — [著作権](concepts/copyright.md) [研究領域の拡張](concepts/multimodal-memorization.md)
+- **分布シフトのある評価に依拠した既存研究は他にどれだけあるか。**
+  [Das 25](papers/das-2025-blind-baselines.md) が名指しした [Panaitescu-Liess 25] は 1 例にすぎない — [評価セットとライブラリ](concepts/benchmarks-and-tools.md)
 - 影響関数系の近似は言語モデルの規模でどこまで有効か — [反実仮想](concepts/counterfactual-memorization.md)
 - データセット単位の推論は個別著作物の依拠性立証に使えるか — [著作権](concepts/copyright.md)
 - 事後学習データの汚染は、事前学習データの汚染と同じ手法で検出できるか — [データセット汚染](concepts/data-contamination.md)
@@ -127,12 +129,14 @@ Wiki 全体への波及が大きい順。
 - 逆学習は自然な忘却と同じメカニズムを使えるのか — [学習順と忘却](concepts/training-order-and-forgetting.md)
 - PEFT による抑制は学習対象パラメータ数の減少だけで説明できるか — [学習過程における抑制](concepts/mitigation-in-training.md) [モデルサイズ](concepts/model-size.md)
 - 中心的仮説（訓練データほど生成確率が大きい）は、重複回数が少ないテキストにも成立するか — [メンバーシップ推論](concepts/membership-inference.md)
-- 重複回数と暗記量の関数形はドメインによらず一定か — [文字列の重複](concepts/string-duplication.md)
+- ~~重複回数と暗記量の関数形はドメインによらず一定か~~ → **[Carlini 23b](papers/carlini-2023-quantifying-memorization.md) が否定的に回答**（T5/C4 で非単調）。
+  では**どのデータセット特性が関数形を決めるのか** — [文字列の重複](concepts/string-duplication.md)
 
 ### 手法の頑健性
 
 - 生成確率へのアクセスを前提としない設定で、既存の実証的知見は再現するか — [メンバーシップ推論](concepts/membership-inference.md)
 - 意味的類似度に基づく指標は、逐語暗記で得られた 3 因子の知見をどこまで再現するか — [文字列の類似度](concepts/string-similarity-memorization.md)
+- **なぜ重複排除は 100 回超の重複に効かなくなるのか。** 重複排除の不完全性で説明しきれるか — [重複排除](concepts/deduplication.md)
 - 重複排除の粒度と暗記抑制効果の関係。近似的な重複を排除すると近似暗記も減るのか — [重複排除](concepts/deduplication.md)
 - 重複排除はベンチマーク汚染も減らすか — [重複排除](concepts/deduplication.md) [データセット汚染](concepts/data-contamination.md)
 - 近似暗記まで捕捉するフィルタリングは実用的な計算量で可能か — [出力の制御と電子透かし](concepts/output-control-and-watermarking.md)
@@ -158,6 +162,22 @@ Wiki 全体への波及が大きい順。
 - 特殊なコーパスを用いた検証は、どこまで一般のモデルに外挿できるか — [評価の枠組み](concepts/evaluation-framework.md)
 
 ---
+
+### 原典を読んで分かったこと（2026-07-31）
+
+被参照数の多い 5 本を stub から昇格させた結果、
+**サーベイの圧縮で落ちていた知見が問いを 3 つ解消し、2 つ新設した**。
+
+| 問い | 結果 |
+|---|---|
+| デコーディング戦略の影響に関する対立 | **解消**（比較対象が違った）→ [対立の台帳](conflicts.md) 2 番 |
+| 重複回数と暗記量の関数形はドメインによらず一定か | **否定的に回答**（T5/C4 で非単調）→ [対立の台帳](conflicts.md) 8 番 |
+| 許容可能な暗記の操作的な区別 | **部分的に回答**（k-eidetic） |
+| （新設）なぜ k を持つ定義が普及しなかったのか | 測定可能性が優先された経緯として読める |
+| （新設）分布シフトのある評価に依拠した研究は他にどれだけあるか | [Das 25](papers/das-2025-blind-baselines.md) の名指しは 1 例 |
+
+**教訓: 被参照数の多い論文は原典を読む価値がある。**
+サーベイは正確だが圧縮されており、圧縮が対立を作ったり留保を落としたりする。
 
 ## C. 枠組みの問題（実験では閉じない）
 

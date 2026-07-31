@@ -19,3 +19,9 @@ type: log
 | 2026-07-29 07:02 | lint | 検証結果: 全 52 ページ、壊れたリンク 0 / 孤立ページ 0 / 片方向リンク 0 / 必須セクション欠落 0。stub 24 件と知識ギャップ 5 件を [README](../../README.md) 末尾に記録 |
 | 2026-07-29 08:10 | publish | GitHub Pages で公開する構成に移行。`vault/` を `docs/` に移し、Obsidian の `[[wikilink]]` 52 ファイルを相対リンクへ変換。`index.md` は `README.md` に統合（サイトのトップページを兼ねるため）。Jekyll 設定（`_config.yml` / `_layouts/default.html`）、デプロイと lint の GitHub Actions、`tools/verify_wiki.py` を追加。一次資料の PDF は出版社の権利のため `.gitignore` |
 | 2026-07-29 10:20 | publish | <https://upura.github.io/awesome-memorization-wiki/> で公開。GitHub Actions（デプロイと lint）を追加し、Pages の build type を workflow に切り替え。frontmatter 4 件の YAML 不正（コロンの引用符漏れ）を修正し、同種の事故を `tools/verify_wiki.py` の検査項目に追加した（1 件でもサイト全体のビルドが落ちるため） |
+| 2026-07-30 09:00 | setup | [未解決の問い（研究アジェンダ）](questions.md)と[対立の台帳](conflicts.md)を新設。105 件の問いを A 文献調査 / B 実験 / C 枠組み に分類。`verify_wiki.py` に stub の被参照数レポートを追加 |
+| 2026-07-31 11:30 | ingest-paper | [Carlini 23b](papers/carlini-2023-quantifying-memorization.md) を原典から再取り込み（stub 解消、11 概念ページが依存）。追試節の知見を反映し [文字列の重複](concepts/string-duplication.md) の主張を訂正、[対立の台帳](conflicts.md) 2 番を解消・8 番を新設 |
+| 2026-07-31 12:10 | ingest-paper | [Ippolito 23](papers/ippolito-2023-false-sense-of-privacy.md) を原典から再取り込み。MemFree の実装と 2 つの失敗経路、近似定義での過小評価を反映 |
+| 2026-07-31 12:40 | ingest-paper | [Das 25](papers/das-2025-blind-baselines.md) を原典から再取り込み。8 データセットへの拡大と、[Panaitescu-Liess 25] の名指し批判を反映。[評価の枠組み](concepts/evaluation-framework.md)・[出力の制御と電子透かし](concepts/output-control-and-watermarking.md)・[著作権](concepts/copyright.md)・[Query](queries/2026-07-29-attack-failure-is-not-success.md) に留保を追記 |
+| 2026-07-31 13:20 | ingest-paper | [Brown 22](papers/brown-2022-what-does-it-mean-privacy.md)・[Carlini 21](papers/carlini-2021-extracting-training-data.md) を原典から再取り込み。k-eidetic による危険度のスペクトラム化を反映し、[評価の枠組み](concepts/evaluation-framework.md) の [Lee 20] 批判に留保を追加 |
+| 2026-07-31 13:30 | lint | 検査通過。stub は 24 → 19 本。片方向リンク 3 件を修正 |

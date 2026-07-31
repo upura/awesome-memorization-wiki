@@ -20,6 +20,8 @@
 
 直近の更新の抜粋です（全履歴は[操作ログ](./docs/wiki/log.md)）。
 
+- 2026-07-31: 被参照数トップの 5 本（[Carlini 23b](./docs/wiki/papers/carlini-2023-quantifying-memorization.md)・[Ippolito 23](./docs/wiki/papers/ippolito-2023-false-sense-of-privacy.md)・[Das 25](./docs/wiki/papers/das-2025-blind-baselines.md)・[Brown 22](./docs/wiki/papers/brown-2022-what-does-it-mean-privacy.md)・[Carlini 21](./docs/wiki/papers/carlini-2021-extracting-training-data.md)）を原典から読み直し、stub を解消。[対立の台帳](./docs/wiki/conflicts.md)が 1 件解消・1 件追加
+- 2026-07-30: [未解決の問い（研究アジェンダ）](./docs/wiki/questions.md)と[対立の台帳](./docs/wiki/conflicts.md)を新設
 - 2026-07-29: サーベイ論文を軸に Wiki を初期構築。概念ページ 23 件・論文ページ 25 件・Query 2 件
 
 ## 目次
@@ -151,7 +153,7 @@
   [105 件の問い](./docs/wiki/questions.md)を、文献調査で閉じうるもの / 実験が要るもの /
   枠組みの問題、に分類しています。
 - **原論文を読んでいない論文ページは frontmatter に `stub: true` と明記しています。**
-  現在 24 本が stub（サーベイ経由の記述）です。
+  現在 19 本が stub（サーベイ経由の記述）です。被参照数の多い順に解消しています。
 
 ## 現時点で最大の知識ギャップ
 
